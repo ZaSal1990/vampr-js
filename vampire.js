@@ -40,5 +40,47 @@ class Vampire {
   }
 
 
+  // Returns the vampire object with that name, or null if no vampire exists with that name
+  vampireWithName(name) {
+    
+    if (this.name === name) {
+      return this;
+    }
+    for (const vamp of this.offspring) {
+      const vampireSearch = vamp.vampireWithName(name);
+      if (vampireSearch) {
+        return vampireSearch;
+      }
+    }
+    return null;
+  }
+  
+  // Returns the total number of vampires that exist
+  get totalDescendents() {
+    let numOfDescendents = 0;
+
+    for (const vamp of this.offspring) {
+      numOfDescendents ++;
+      const descendents = vamp.totalDescendents;
+      numOfDescendents = numOfDescendents + descendents;
+    }
+    return numOfDescendents;
+  }
+  
+  // Returns an array of all the vampires that were converted after 1980
+  get allMillennialVampires() {
+    let millenialVamps = [];
+
+    if (this.yearConverted > 1980) {
+      millenialVamps.push(this);
+    }
+    for (const vamp of this.offspring) {
+      const currentVamp = vamp.allMillennialVampires;
+      millenialVamps = millenialVamps.concat(currentVamp);
+    }
+    return millenialVamps;
+  }
+}
+
 module.exports = Vampire;
 
